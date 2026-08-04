@@ -26,6 +26,7 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
+      "bundler": "metro",
       "favicon": "./assets/muse-app-icon-1024.png",
       "name": "MUSE — Music Discovery",
       "shortName": "MUSE",
@@ -58,7 +59,12 @@
           "enableBackgroundRecording": false
         }
       ],
-      "expo-video"
-    ]
+      "expo-video",
+      "expo-router",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }

@@ -119,14 +119,19 @@ The Discover screen also contains a prominent **See how MUSE is built** entry po
 ## Application architecture
 
 ```text
-index.ts
-  └─ App.tsx
-      ├─ AnimatedBackground
-      ├─ Discover / Collection / Learn / Studio
-      ├─ CustomTabBar
-      ├─ MusicPlayerSheet
-      ├─ SongDetailModal + VideoView
-      └─ InstallPrompt
+app/_layout.tsx
+  └─ Stack routes
+      ├─ app/index.tsx (Discover)
+      ├─ app/collection.tsx (Collection)
+      ├─ app/learn.tsx (Learn)
+      └─ app/studio.tsx (Studio)
+
+Root layout
+  ├─ AnimatedBackground
+  ├─ CustomTabBar
+  ├─ MusicPlayerSheet
+  ├─ SongDetailModal + VideoView
+  └─ InstallPrompt
 
 Screens and components
   ⇅ selectors and actions
@@ -143,13 +148,14 @@ MusicPlayerSheet
   └─ useAudioPlayer ─> expo-audio and native media session
 ```
 
-The project uses the standard Expo entry structure:
+The project uses Expo Router's file-based entry structure:
 
 ```text
-index.ts → App.tsx → src/screens/
+package.json main: expo-router/entry
+app/_layout.tsx → app/index.tsx, app/collection.tsx, app/learn.tsx, app/studio.tsx
 ```
 
-It does not use Expo Router, so an `app/` directory, `app/index.tsx`, and `app/_layout.tsx` are not required.
+The route files stay thin and reuse the existing screen components in `src/screens/`. This keeps the visual system and business logic stable while adding URL paths, deep links, browser back behavior, and typed route support.
 
 ## Search pipeline
 
@@ -186,7 +192,11 @@ Search responses, active playback position, and transient errors remain session 
 ## Repository map
 
 ```text
-App.tsx                         Root composition and local tab selection
+app/_layout.tsx                Root layout, global overlays, theme, and tab navigation
+app/index.tsx                  Discover route
+app/collection.tsx             Collection route
+app/learn.tsx                  English project guide route
+app/studio.tsx                 Studio route
 app.json                       Expo, native, web, and plugin configuration
 eas.json                       Development, preview, production, and submit profiles
 public/                        PWA shell, manifest, service worker, icons, and privacy

@@ -9,11 +9,18 @@ const requireFile = (path) => {
 };
 
 const app = readJson('app.json').expo;
+const packageJson = readJson('package.json');
 const manifest = readJson('public/manifest.json');
 const eas = readJson('eas.json');
 
 if (!app.ios?.bundleIdentifier || !app.android?.package) {
   throw new Error('Native bundle identifiers are not configured.');
+}
+if (packageJson.main !== 'expo-router/entry' || !app.plugins?.includes('expo-router')) {
+  throw new Error('Expo Router entry point and config plugin are required.');
+}
+for (const path of ['app/_layout.tsx', 'app/index.tsx', 'app/collection.tsx', 'app/learn.tsx', 'app/studio.tsx']) {
+  requireFile(path);
 }
 if (!app.ios?.buildNumber || !Number.isInteger(app.android?.versionCode)) {
   throw new Error('Native build numbers are not configured.');
@@ -51,7 +58,7 @@ for (const htmlPath of ['public/index.html', 'dist/index.html']) {
 
 const netlifyConfig = readFileSync(join(root, 'netlify.toml'), 'utf8');
 const catalogFunction = readFileSync(join(root, 'netlify/functions/itunes-search.mts'), 'utf8');
-if (!netlifyConfig.includes('functions = "netlify/functions"') || !catalogFunction.includes("path: '/api/itunes-search'")) {
+if (!netlifyConfig.includes('functions = "netlify/functions"') || !netlifyConfig.includes('to = "/index.html"') || !catalogFunction.includes("path: '/api/itunes-search'")) {
   throw new Error('The Netlify music-catalog proxy is not configured for deployment.');
 }
 

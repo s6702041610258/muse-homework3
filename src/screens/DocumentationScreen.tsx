@@ -168,8 +168,9 @@ const searchFlow = [
 ];
 
 const sourceMap = [
-  ['App.tsx', 'Root composition and local tab selection'],
-  ['src/screens/', 'Discover, Collection, Learn, and Studio use cases'],
+  ['app/_layout.tsx', 'Root layout, global overlays, theme, and tab navigation'],
+  ['app/*.tsx', 'File-based Discover, Collection, Learn, and Studio routes'],
+  ['src/screens/', 'Reusable screen implementations used by each route'],
   ['src/components/', 'Reusable search, cards, carousel, player, modal, PWA, and form UI'],
   ['src/hooks/', 'Audio engine integration and reduced-motion detection'],
   ['src/services/', 'Catalog access, response validation, video matching, and issue submission'],
