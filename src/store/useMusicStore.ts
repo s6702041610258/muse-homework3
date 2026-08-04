@@ -25,7 +25,10 @@ const DEFAULT_PREFERENCES: MusicPreferences = {
   isDarkMode: true,
 };
 
+let preferenceWriteVersion = 0;
+
 function savePreferences(preferences: MusicPreferences) {
+  preferenceWriteVersion += 1;
   return AsyncStorage.setItem(PREFERENCES_STORAGE_KEY, JSON.stringify(preferences));
 }
 
@@ -185,8 +188,10 @@ export const useMusicStore = create<MusicState>((set, get) => ({
   },
 
   loadPreferences: async () => {
+    const loadVersion = preferenceWriteVersion;
     try {
       const stored = await AsyncStorage.getItem(PREFERENCES_STORAGE_KEY);
+      if (loadVersion !== preferenceWriteVersion) return;
       if (stored) {
         const preferences = JSON.parse(stored);
         set({

@@ -31,4 +31,18 @@ describe('appearance preferences', () => {
 
     expect(useMusicStore.getState().isDarkMode).toBe(false);
   });
+
+  it('does not let a slow preference load overwrite a newer theme choice', async () => {
+    let resolveStored!: (value: string) => void;
+    asyncStorageMock.getItem.mockReturnValue(new Promise<string>((resolve) => {
+      resolveStored = resolve;
+    }));
+
+    const pendingLoad = useMusicStore.getState().loadPreferences();
+    useMusicStore.getState().setColorScheme(false);
+    resolveStored(JSON.stringify({ isDarkMode: true }));
+    await pendingLoad;
+
+    expect(useMusicStore.getState().isDarkMode).toBe(false);
+  });
 });
