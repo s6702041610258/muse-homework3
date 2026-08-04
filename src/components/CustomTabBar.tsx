@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
-import { Compass, Heart, SlidersHorizontal } from 'lucide-react-native';
+import { BookOpen, Compass, Heart, SlidersHorizontal } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 import { useMusicStore } from '../store/useMusicStore';
 import { createShadow } from '../utils/shadows';
@@ -10,8 +10,8 @@ import { getTheme, palette, radii } from '../theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface CustomTabBarProps {
-  activeTab: 'search' | 'favorites' | 'settings';
-  onTabChange: (tab: 'search' | 'favorites' | 'settings') => void;
+  activeTab: 'search' | 'favorites' | 'documentation' | 'settings';
+  onTabChange: (tab: 'search' | 'favorites' | 'documentation' | 'settings') => void;
 }
 
 export function CustomTabBar({ activeTab, onTabChange }: CustomTabBarProps) {
@@ -24,10 +24,11 @@ export function CustomTabBar({ activeTab, onTabChange }: CustomTabBarProps) {
   const tabs = [
     { key: 'search', label: 'Discover', icon: Compass },
     { key: 'favorites', label: 'Collection', icon: Heart },
+    { key: 'documentation', label: 'Learn', icon: BookOpen },
     { key: 'settings', label: 'Studio', icon: SlidersHorizontal },
   ] as const;
 
-  const handleTabPress = (tabKey: 'search' | 'favorites' | 'settings') => {
+  const handleTabPress = (tabKey: 'search' | 'favorites' | 'documentation' | 'settings') => {
     if (hapticsEnabled) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
@@ -100,10 +101,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   tabItem: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 3,
     position: 'relative',
   },
   iconContainer: {

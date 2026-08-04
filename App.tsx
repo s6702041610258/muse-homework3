@@ -14,10 +14,11 @@ import { InstallPrompt } from './src/components/InstallPrompt';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { FavoritesScreen } from './src/screens/FavoritesScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
+import { DocumentationScreen } from './src/screens/DocumentationScreen';
 import { getTheme, palette } from './src/theme';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'search' | 'favorites' | 'settings'>('search');
+  const [activeTab, setActiveTab] = useState<'search' | 'favorites' | 'documentation' | 'settings'>('search');
   const isDarkMode = useMusicStore((state) => state.isDarkMode);
   const loadFavorites = useMusicStore((state) => state.loadFavorites);
   const loadPreferences = useMusicStore((state) => state.loadPreferences);
@@ -51,8 +52,9 @@ export default function App() {
         {/* 2. Screen Views */}
         <View style={styles.viewport}>
           <View style={[styles.screenContainer, width > 700 && styles.desktopFrame]}>
-            {activeTab === 'search' && <HomeScreen />}
+            {activeTab === 'search' && <HomeScreen onOpenDocumentation={() => setActiveTab('documentation')} />}
             {activeTab === 'favorites' && <FavoritesScreen />}
+            {activeTab === 'documentation' && <DocumentationScreen />}
             {activeTab === 'settings' && <SettingsScreen />}
           </View>
         </View>

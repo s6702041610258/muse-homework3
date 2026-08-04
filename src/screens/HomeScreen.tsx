@@ -12,7 +12,7 @@ import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ArrowRight, Headphones, Radio, Sparkles, TrendingUp } from 'lucide-react-native';
+import { ArrowRight, BookOpen, Headphones, Radio, Sparkles, TrendingUp } from 'lucide-react-native';
 import * as Haptics from 'expo-haptics';
 
 import { useMusicStore } from '../store/useMusicStore';
@@ -33,7 +33,11 @@ const moods = [
   { label: 'Electronic', accent: '#65D9FF' },
 ];
 
-export function HomeScreen() {
+interface HomeScreenProps {
+  onOpenDocumentation: () => void;
+}
+
+export function HomeScreen({ onOpenDocumentation }: HomeScreenProps) {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const reducedMotion = useReducedMotion();
@@ -157,6 +161,24 @@ export function HomeScreen() {
           <Text style={[styles.statementCopy, { color: theme.muted }]}>Thirty-second previews. Zero noise. <Text style={{ color: palette.lime }}>•</Text>{`\n`}A universe of sound, tuned to you.</Text>
         </Animated.View>
 
+        <Pressable
+          onPress={onOpenDocumentation}
+          style={({ pressed }) => [styles.learnBanner, { backgroundColor: theme.surface, borderColor: `${palette.lime}55` }, pressed && styles.learnBannerPressed]}
+          accessibilityRole="button"
+          accessibilityLabel="Open the MUSE project guide"
+          accessibilityHint="Shows detailed English documentation about the app architecture, tools, and features"
+        >
+          <View style={styles.learnBannerLeft}>
+            <View style={styles.learnBannerIcon}><BookOpen size={17} color={palette.ink} /></View>
+            <View style={styles.learnBannerCopy}>
+              <Text style={[styles.learnBannerKicker, { color: palette.lime }]}>NEW · OPEN PROJECT GUIDE</Text>
+              <Text style={[styles.learnBannerTitle, { color: theme.text }]}>See how MUSE is built</Text>
+              <Text style={[styles.learnBannerText, { color: theme.muted }]}>Architecture, tools, features, data flow, testing, and release notes.</Text>
+            </View>
+          </View>
+          <View style={[styles.learnBannerArrow, { borderColor: theme.line }]}><ArrowRight size={16} color={theme.text} /></View>
+        </Pressable>
+
         <SearchBar key={searchQuery} onSearch={(text) => void fetchMusic(text)} />
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.moodRail}>
@@ -264,6 +286,15 @@ const styles = StyleSheet.create({
   statement: { fontSize: 42, lineHeight: 40, fontWeight: '900', letterSpacing: -2.1, marginTop: 14 },
   statementCompact: { fontSize: 36, lineHeight: 35, letterSpacing: -1.7 },
   statementCopy: { fontSize: 10.5, lineHeight: 15, fontWeight: '600', marginTop: 5, marginBottom: 5 },
+  learnBanner: { marginHorizontal: 20, marginTop: 10, marginBottom: 12, borderWidth: 1, borderRadius: radii.lg, padding: 13, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  learnBannerPressed: { opacity: 0.72, transform: [{ scale: 0.99 }] },
+  learnBannerLeft: { flex: 1, flexDirection: 'row', alignItems: 'center' },
+  learnBannerIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: palette.lime, alignItems: 'center', justifyContent: 'center' },
+  learnBannerCopy: { flex: 1, marginLeft: 10 },
+  learnBannerKicker: { fontSize: 6.8, fontWeight: '900', letterSpacing: 0.85 },
+  learnBannerTitle: { fontSize: 13, fontWeight: '900', letterSpacing: -0.25, marginTop: 2 },
+  learnBannerText: { fontSize: 7.8, lineHeight: 11.5, fontWeight: '600', marginTop: 2 },
+  learnBannerArrow: { width: 34, height: 34, borderRadius: 12, borderWidth: 1, alignItems: 'center', justifyContent: 'center', marginLeft: 8 },
   moodRail: { paddingHorizontal: 20, paddingTop: 3, paddingBottom: 16, gap: 8 },
   moodChip: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: radii.pill, paddingVertical: 9, paddingHorizontal: 12 },
   moodDot: { width: 6, height: 6, borderRadius: 3, marginRight: 7 },
