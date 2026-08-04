@@ -89,7 +89,7 @@ describe('iTunes catalog requests', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     await expect(searchSongs('phase-html-response-query')).rejects.toThrow(
-      'For local web development, start MUSE with `npm run web`',
+      'Start MUSE with `npm run web` (not `npx expo start --web`)',
     );
   });
 
