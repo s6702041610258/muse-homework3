@@ -1,0 +1,28 @@
+{
+  "id": "/",
+  "name": "MUSE — Music Discovery",
+  "short_name": "MUSE",
+  "description": "Discover songs, save favorites, and play official audio and video previews.",
+  "lang": "en",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#08070B",
+  "background_color": "#08070B",
+  "categories": ["music", "entertainment"],
+  "icons": [
+    {
+      "src": "/muse-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/muse-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "expo": {
+    "name": "MUSE",
+    "slug": "music-search-app",
+    "version": "1.0.0",
+    "scheme": "muse",
+    "orientation": "portrait",
+    "icon": "./assets/muse-app-icon-1024.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "com.mongkoi.muse",
+      "buildNumber": "1",
+      "supportsTablet": false,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.mongkoi.muse",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#08070B",
+        "foregroundImage": "./assets/muse-app-icon-1024.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/muse-app-icon-1024.png",
+      "name": "MUSE — Music Discovery",
+      "shortName": "MUSE",
+      "lang": "en",
+      "themeColor": "#08070B",
+      "backgroundColor": "#08070B"
+    },
+    "plugins": [
+      "expo-system-ui",
+      "expo-image",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#08070B",
+          "image": "./assets/muse-app-icon-1024.png",
+          "imageWidth": 240,
+          "resizeMode": "contain",
+          "dark": {
+            "backgroundColor": "#08070B",
+            "image": "./assets/muse-app-icon-1024.png"
+          }
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "enableBackgroundPlayback": true,
+          "enableBackgroundRecording": false
+        }
+      ],
+      "expo-video"
+    ]
+  }
+}
