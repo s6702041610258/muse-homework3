@@ -1,5 +1,5 @@
 import React from 'react';
-import { FavoritesScreen } from '../src/screens/FavoritesScreen';
+import { FavoritesScreen } from '../screens/FavoritesScreen';
 
 export default function CollectionRoute() {
   return <FavoritesScreen />;

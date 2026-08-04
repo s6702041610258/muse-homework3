@@ -119,12 +119,12 @@ The Discover screen also contains a prominent **See how MUSE is built** entry po
 ## Application architecture
 
 ```text
-app/_layout.tsx
+src/app/_layout.tsx
   └─ Stack routes
-      ├─ app/index.tsx (Discover)
-      ├─ app/collection.tsx (Collection)
-      ├─ app/learn.tsx (Learn)
-      └─ app/studio.tsx (Studio)
+      ├─ src/app/index.tsx (Discover)
+      ├─ src/app/collection.tsx (Collection)
+      ├─ src/app/learn.tsx (Learn)
+      └─ src/app/studio.tsx (Studio)
 
 Root layout
   ├─ AnimatedBackground
@@ -152,7 +152,7 @@ The project uses Expo Router's file-based entry structure:
 
 ```text
 package.json main: expo-router/entry
-app/_layout.tsx → app/index.tsx, app/collection.tsx, app/learn.tsx, app/studio.tsx
+src/app/_layout.tsx → src/app/index.tsx, src/app/collection.tsx, src/app/learn.tsx, src/app/studio.tsx
 ```
 
 The route files stay thin and reuse the existing screen components in `src/screens/`. This keeps the visual system and business logic stable while adding URL paths, deep links, browser back behavior, and typed route support.
@@ -192,11 +192,11 @@ Search responses, active playback position, and transient errors remain session 
 ## Repository map
 
 ```text
-app/_layout.tsx                Root layout, global overlays, theme, and tab navigation
-app/index.tsx                  Discover route
-app/collection.tsx             Collection route
-app/learn.tsx                  English project guide route
-app/studio.tsx                 Studio route
+src/app/_layout.tsx            Root layout, global overlays, theme, and tab navigation
+src/app/index.tsx              Discover route
+src/app/collection.tsx         Collection route
+src/app/learn.tsx              English project guide route
+src/app/studio.tsx             Studio route
 app.json                       Expo, native, web, and plugin configuration
 eas.json                       Development, preview, production, and submit profiles
 public/                        PWA shell, manifest, service worker, icons, and privacy

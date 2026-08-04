@@ -1,5 +1,5 @@
 import React from 'react';
-import { DocumentationScreen } from '../src/screens/DocumentationScreen';
+import { DocumentationScreen } from '../screens/DocumentationScreen';
 
 export default function LearnRoute() {
   return <DocumentationScreen />;

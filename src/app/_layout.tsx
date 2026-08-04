@@ -6,13 +6,13 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as SystemUI from 'expo-system-ui';
 
-import { AnimatedBackground } from '../src/components/AnimatedBackground';
-import { CustomTabBar } from '../src/components/CustomTabBar';
-import { InstallPrompt } from '../src/components/InstallPrompt';
-import { MusicPlayerSheet } from '../src/components/MusicPlayerSheet';
-import { SongDetailModal } from '../src/components/SongDetailModal';
-import { useMusicStore } from '../src/store/useMusicStore';
-import { getTheme, palette } from '../src/theme';
+import { AnimatedBackground } from '../components/AnimatedBackground';
+import { CustomTabBar } from '../components/CustomTabBar';
+import { InstallPrompt } from '../components/InstallPrompt';
+import { MusicPlayerSheet } from '../components/MusicPlayerSheet';
+import { SongDetailModal } from '../components/SongDetailModal';
+import { useMusicStore } from '../store/useMusicStore';
+import { getTheme, palette } from '../theme';
 
 type AppTab = 'search' | 'favorites' | 'documentation' | 'settings';
 

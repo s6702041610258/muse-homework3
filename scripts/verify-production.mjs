@@ -19,7 +19,7 @@ if (!app.ios?.bundleIdentifier || !app.android?.package) {
 if (packageJson.main !== 'expo-router/entry' || !app.plugins?.includes('expo-router')) {
   throw new Error('Expo Router entry point and config plugin are required.');
 }
-for (const path of ['app/_layout.tsx', 'app/index.tsx', 'app/collection.tsx', 'app/learn.tsx', 'app/studio.tsx']) {
+for (const path of ['src/app/_layout.tsx', 'src/app/index.tsx', 'src/app/collection.tsx', 'src/app/learn.tsx', 'src/app/studio.tsx']) {
   requireFile(path);
 }
 if (!app.ios?.buildNumber || !Number.isInteger(app.android?.versionCode)) {
