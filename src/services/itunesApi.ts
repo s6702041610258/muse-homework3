@@ -41,7 +41,7 @@ async function readCatalogResponse(response: Response): Promise<iTunesSearchResp
 
   if (trimmedBody.startsWith('<!DOCTYPE') || trimmedBody.startsWith('<html')) {
     throw new Error(
-      'The local Expo server returned a web page instead of catalog data. Start MUSE with `npm run web` (not `npx expo start --web`), and stop any older Expo process still using port 8081 first.',
+      'The local catalog route returned a web page instead of JSON. Restart Expo with `npm run web` so the Expo Router API route is loaded.',
     );
   }
 

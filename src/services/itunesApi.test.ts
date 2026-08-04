@@ -55,7 +55,7 @@ describe('iTunes catalog requests', () => {
     expect(results[0]).toMatchObject({ id: '1', title: 'Playable' });
   });
 
-  it('uses the same-origin Netlify proxy in a browser runtime', async () => {
+  it('uses the same-origin Expo API route in a browser runtime', async () => {
     vi.stubGlobal('window', {});
     vi.stubGlobal('document', {});
     const fetchMock = vi.fn().mockResolvedValue(catalogResponse([]));
@@ -81,7 +81,7 @@ describe('iTunes catalog requests', () => {
     await expect(searchSongs('phase-six-aborted-query', 30, controller.signal)).rejects.toThrow('Connection timed out');
   });
 
-  it('explains when a plain Expo web server returns HTML for the Function route', async () => {
+  it('explains when the local Expo API route is stale or unavailable', async () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response('<!DOCTYPE html><html></html>', {
       status: 200,
       headers: { 'content-type': 'text/html' },
@@ -89,7 +89,7 @@ describe('iTunes catalog requests', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     await expect(searchSongs('phase-html-response-query')).rejects.toThrow(
-      'Start MUSE with `npm run web` (not `npx expo start --web`)',
+      'Restart Expo with `npm run web`',
     );
   });
 

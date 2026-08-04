@@ -20,7 +20,7 @@ interface SongDetailModalProps {
   onPlaySong: (song: Song) => void;
 }
 
-function VideoPreview({ video, onBack, textColor, mutedColor, lineColor }: { video: MusicVideo; onBack: () => void; textColor: string; mutedColor: string; lineColor: string }) {
+function VideoPreview({ video, onBack, textColor, mutedColor, lineColor, accentColor }: { video: MusicVideo; onBack: () => void; textColor: string; mutedColor: string; lineColor: string; accentColor: string }) {
   const reducedMotion = useReducedMotion();
   const setIsVideoPlaying = useMusicStore((state) => state.setIsVideoPlaying);
   const videoAutoplayEnabled = useMusicStore((state) => state.videoAutoplayEnabled);
@@ -46,7 +46,7 @@ function VideoPreview({ video, onBack, textColor, mutedColor, lineColor }: { vid
     <Animated.View entering={reducedMotion ? undefined : FadeIn.duration(220)} style={styles.videoContent}>
       <View style={styles.videoHeader}>
         <Pressable onPress={onBack} style={[styles.roundButton, { borderColor: lineColor }]} accessibilityRole="button" accessibilityLabel="Back to track details"><ArrowLeft size={18} color={textColor} /></Pressable>
-        <View style={styles.videoHeading}><Text style={styles.videoKicker}>VIDEO PREVIEW</Text><Text style={[styles.videoSource, { color: mutedColor }]}>STREAMED ON DEMAND</Text></View>
+        <View style={styles.videoHeading}><Text style={[styles.videoKicker, { color: accentColor }]}>VIDEO PREVIEW</Text><Text style={[styles.videoSource, { color: mutedColor }]}>STREAMED ON DEMAND</Text></View>
         <Pressable onPress={() => void Linking.openURL(video.storeUrl)} disabled={!video.storeUrl} style={[styles.roundButton, { borderColor: lineColor }]} accessibilityRole="link" accessibilityLabel="Open video in Apple Music"><ExternalLink size={17} color={textColor} /></Pressable>
       </View>
 
@@ -62,7 +62,7 @@ function VideoPreview({ video, onBack, textColor, mutedColor, lineColor }: { vid
           allowsVideoFrameAnalysis={false}
           fullscreenOptions={{ enable: true }}
         />
-        {status === 'loading' && <View style={styles.videoLoading}><ActivityIndicator color={palette.lime} /></View>}
+        {status === 'loading' && <View style={styles.videoLoading}><ActivityIndicator color={accentColor} /></View>}
         {status === 'readyToPlay' && !isPlaying && player.currentTime <= 0 && !playbackError && (
           <Pressable
             onPress={() => player.play()}
@@ -70,7 +70,7 @@ function VideoPreview({ video, onBack, textColor, mutedColor, lineColor }: { vid
             accessibilityRole="button"
             accessibilityLabel={`Play video preview for ${video.title}`}
           >
-            <View style={styles.videoPlayButton}><Play size={24} color={palette.ink} fill={palette.ink} /></View>
+            <View style={[styles.videoPlayButton, { backgroundColor: accentColor }]}><Play size={24} color={palette.ink} fill={palette.ink} /></View>
           </Pressable>
         )}
       </View>
@@ -80,7 +80,7 @@ function VideoPreview({ video, onBack, textColor, mutedColor, lineColor }: { vid
       {playbackError && <Text style={styles.videoError} accessibilityRole="alert">This preview could not be played on this device.</Text>}
       <View style={[styles.courtesy, { borderColor: lineColor }]}>
         <Text style={[styles.courtesyText, { color: mutedColor }]}>Preview provided courtesy of iTunes · streamed, never downloaded</Text>
-        <Pressable disabled={!video.storeUrl} onPress={() => void Linking.openURL(video.storeUrl)} accessibilityRole="link" accessibilityLabel="View this video in Apple Music"><Text style={styles.storeLink}>View in Apple Music</Text></Pressable>
+        <Pressable disabled={!video.storeUrl} onPress={() => void Linking.openURL(video.storeUrl)} accessibilityRole="link" accessibilityLabel="View this video in Apple Music"><Text style={[styles.storeLink, { color: accentColor }]}>View in Apple Music</Text></Pressable>
       </View>
     </Animated.View>
   );
@@ -172,7 +172,7 @@ function SongDetailContent({ song, initialView = 'details', onClose, onPlaySong 
               <ScrollView showsVerticalScrollIndicator={false} bounces={false} contentContainerStyle={styles.cardScroll}>
                 {showVideo ? (
                 video ? (
-                  <VideoPreview video={video} onBack={closeVideo} textColor={theme.text} mutedColor={theme.muted} lineColor={theme.line} />
+                  <VideoPreview video={video} onBack={closeVideo} textColor={theme.text} mutedColor={theme.muted} lineColor={theme.line} accentColor={activeThemeColor} />
                 ) : (
                   <View style={styles.videoState}>
                     <View style={styles.videoHeader}>
@@ -265,19 +265,19 @@ const styles = StyleSheet.create({
   roundButton: { width: 38, height: 38, borderRadius: 19, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
   roundButtonSpacer: { width: 38, height: 38 },
   videoHeading: { alignItems: 'center' },
-  videoKicker: { color: palette.lime, fontSize: 8.5, fontWeight: '900', letterSpacing: 1.2 },
+  videoKicker: { fontSize: 8.5, fontWeight: '900', letterSpacing: 1.2 },
   videoSource: { fontSize: 7.5, fontWeight: '700', letterSpacing: 0.8, marginTop: 2 },
   videoFrame: { width: '100%', aspectRatio: 16 / 9, borderRadius: 23, overflow: 'hidden', borderWidth: 1, backgroundColor: '#000' },
   video: { width: '100%', height: '100%' },
   videoLoading: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' },
   videoPlayOverlay: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(8,7,11,0.20)' },
-  videoPlayButton: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center', backgroundColor: palette.lime },
+  videoPlayButton: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' },
   videoTitle: { fontSize: 22, lineHeight: 26, fontWeight: '900', letterSpacing: -0.8, marginTop: 16 },
   videoArtist: { fontSize: 11, fontWeight: '700', marginTop: 4 },
   videoError: { color: palette.coral, fontSize: 10, marginTop: 8 },
   courtesy: { borderTopWidth: 1, marginTop: 16, paddingTop: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
   courtesyText: { flex: 1, fontSize: 7.5, lineHeight: 11 },
-  storeLink: { color: palette.lime, fontSize: 8.5, fontWeight: '800' },
+  storeLink: { fontSize: 8.5, fontWeight: '800' },
   videoState: { minHeight: 390 },
   stateBody: { flex: 1, minHeight: 320, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 26 },
   stateTitle: { fontSize: 20, fontWeight: '900', marginTop: 15, textAlign: 'center' },

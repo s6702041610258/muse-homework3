@@ -93,7 +93,8 @@ The Discover screen also contains a prominent **See how MUSE is built** entry po
 - Network-first navigation
 - Same-origin static asset caching
 - Cross-origin artwork, audio, and video intentionally excluded from cache
-- Same-origin Netlify Function for catalog search on the web
+- Same-origin Expo Router API Route for catalog search during local web development
+- Optional Netlify adapter reserved for final web deployment
 
 ## Technology stack
 
@@ -112,7 +113,8 @@ The Discover screen also contains a prominent **See how MUSE is built** entry po
 | Gestures | Gesture Handler | Full-player pan interaction |
 | Feedback | Expo Haptics | Optional tactile interaction cues |
 | API | Apple iTunes Search API | Public song and music-video preview catalog |
-| Web gateway | Netlify Functions | Validated same-origin proxy for browser requests |
+| Local web gateway | Expo Router API Routes | Validated same-origin proxy served by the Expo development server |
+| Deployment adapter | Netlify Functions | Optional production adapter around the shared gateway logic |
 | Testing | Vitest | Service, state, queue, and gateway tests |
 | Release | EAS + Netlify | Native build profiles and web deployment |
 
@@ -142,7 +144,10 @@ AsyncStorage
 Discover and detail UI
   └─ catalog services
       ├─ iOS / Android ───────────────> Apple iTunes Search API
-      └─ Web / PWA ─> Netlify Function ─> Apple iTunes Search API
+      └─ Web / PWA ─> Expo Router API Route ─> Apple iTunes Search API
+
+Final Netlify deployment
+  └─ Netlify adapter ─> shared gateway logic ─> Apple iTunes Search API
 
 MusicPlayerSheet
   └─ useAudioPlayer ─> expo-audio and native media session
@@ -163,7 +168,7 @@ The route files stay thin and reuse the existing screen components in `src/scree
 2. The screen cancels its previous `AbortController`.
 3. A monotonically increasing request ID identifies the new request.
 4. Native platforms call Apple directly; web calls `/api/itunes-search`.
-5. The Netlify Function validates the entity, limits the term, clamps result count, and applies an upstream timeout.
+5. The shared gateway validates the entity, limits the term, clamps result count, and applies an upstream timeout. Expo Router serves it locally; the Netlify adapter can serve the same logic after deployment.
 6. The service rejects HTML and malformed responses before parsing catalog data.
 7. Records without playable previews are removed.
 8. API records are mapped into typed `Song` objects.
@@ -200,8 +205,10 @@ src/app/studio.tsx             Studio route
 app.json                       Expo, native, web, and plugin configuration
 eas.json                       Development, preview, production, and submit profiles
 public/                        PWA shell, manifest, service worker, icons, and privacy
-netlify/functions/             Same-origin web catalog proxy
-netlify.toml                   Build, publish, and function configuration
+src/app/api/                   Expo Router API routes used in local web development
+src/server/                    Shared server-side validation and catalog gateway logic
+netlify/functions/             Optional production adapter around the shared gateway
+netlify.toml                   Final-stage hosting and function configuration
 scripts/                       Production checks and DOM nesting test
 src/components/                Reusable search, cards, player, modal, and form UI
 src/hooks/                     Audio engine integration and reduced-motion detection
@@ -243,22 +250,22 @@ Recommended pre-release checks still include VoiceOver, TalkBack, keyboard focus
 - Favorites and preferences remain on the current device
 - Issue diagnostics require explicit consent and exclude listening history
 - Public support routing values are configurable, but secrets are never stored in `EXPO_PUBLIC_` variables
-- The web gateway allowlists entities, limits input, clamps result counts, and times out upstream requests
+- The shared web gateway allowlists entities, limits input, clamps result counts, and times out upstream requests
 - The service worker rejects cross-origin media before caching
 
 ## Testing
 
-The current suite contains 6 test files and 20 tests covering:
+The current suite contains 6 test files and 21 tests covering:
 
 - Blank catalog queries
 - Filtering results without previews
-- Web proxy routing
+- Expo Router API routing
 - Request cancellation propagation
 - HTML-response safeguards
 - Unicode-aware video matching
 - Queue next, previous, wrap, shuffle, empty, and missing-song behavior
 - Issue validation, reference creation, formatting, and endpoint submission
-- Netlify Function validation, clamping, cache headers, and upstream failure behavior
+- Shared gateway validation, clamping, cache headers, upstream failures, and both deployment adapters
 - Theme switching and AsyncStorage preference restoration
 - Interactive DOM nesting rules for web
 
@@ -268,12 +275,15 @@ The current suite contains 6 test files and 20 tests covering:
 # Start Expo
 npm start
 
-# Run Expo web with the local Netlify Function
-# Open http://localhost:8888
+# Run Expo web with the local Expo Router API Route
+# Open the URL printed by Expo, normally http://localhost:8081
 npm run web
 
-# Run Expo web alone for UI-only work
+# Equivalent explicit Expo command
 npm run web:expo
+
+# Optional final-host adapter preview
+npm run web:netlify
 
 # Quality checks
 npm run typecheck
@@ -304,8 +314,9 @@ eas build --profile preview --platform android
 eas build --profile production --platform ios
 eas submit --profile production --platform ios
 
-# Production web deployment
-netlify deploy --prod --dir=dist --functions=netlify/functions
+# Production web deployment is intentionally performed only after final local QA.
+# The Netlify adapter remains available, but do not deploy during normal Expo development.
+# Final command: netlify deploy --prod --dir=dist/client --functions=netlify/functions
 ```
 
 ## Known boundaries

@@ -1,5 +1,14 @@
 import { Platform, ViewStyle } from 'react-native';
 
+function colorWithOpacity(color: string, opacity: number) {
+  const hex = /^#([0-9a-f]{6})$/i.exec(color)?.[1];
+  if (!hex) return color;
+  const red = Number.parseInt(hex.slice(0, 2), 16);
+  const green = Number.parseInt(hex.slice(2, 4), 16);
+  const blue = Number.parseInt(hex.slice(4, 6), 16);
+  return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
+}
+
 export function createShadow(
   color: string,
   offsetY: number,
@@ -9,7 +18,7 @@ export function createShadow(
 ): ViewStyle {
   if (Platform.OS === 'web') {
     return {
-      boxShadow: `0px ${offsetY}px ${radius}px rgba(0, 0, 0, ${opacity})`,
+      boxShadow: `0px ${offsetY}px ${radius}px ${colorWithOpacity(color, opacity)}`,
     } as any;
   }
   return {

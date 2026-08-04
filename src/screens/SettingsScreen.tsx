@@ -26,10 +26,11 @@ interface ControlRowProps {
   line: string;
   text: string;
   muted: string;
+  switchOffColor: string;
   hapticsEnabled: boolean;
 }
 
-function ControlRow({ icon, title, detail, value, onToggle, accent, line, text, muted, hapticsEnabled }: ControlRowProps) {
+function ControlRow({ icon, title, detail, value, onToggle, accent, line, text, muted, switchOffColor, hapticsEnabled }: ControlRowProps) {
   return (
     <View>
       <View style={styles.controlRow}>
@@ -44,7 +45,7 @@ function ControlRow({ icon, title, detail, value, onToggle, accent, line, text, 
             if (hapticsEnabled) void Haptics.selectionAsync();
             onToggle();
           }}
-          trackColor={{ false: '#2C2931', true: accent }}
+          trackColor={{ false: switchOffColor, true: accent }}
           thumbColor={value && accent === palette.lime ? palette.ink : '#FFFFFF'}
           accessibilityLabel={title}
           accessibilityHint={detail}
@@ -170,11 +171,11 @@ export function SettingsScreen() {
           <View><Text style={[styles.sectionKicker, { color: theme.muted }]}>PLAYBACK BEHAVIOR</Text><Text style={[styles.sectionTitle, { color: theme.text }]}>How MUSE responds</Text></View>
         </View>
         <View style={[styles.controlCard, { backgroundColor: theme.surface, borderColor: theme.line }]}>
-          <ControlRow icon={<Volume2 size={18} color={activeThemeColor} />} title="Preview audio" detail="Enable 30-second catalog playback" value={soundEnabled} onToggle={toggleSound} accent={activeThemeColor} line={theme.line} text={theme.text} muted={theme.muted} hapticsEnabled={hapticsEnabled} />
-          <ControlRow icon={<Zap size={18} color={palette.coral} />} title="Instant play" detail="Start audio when a new track is selected" value={autoPlayEnabled} onToggle={toggleAutoPlay} accent={palette.coral} line={theme.line} text={theme.text} muted={theme.muted} hapticsEnabled={hapticsEnabled} />
-          <ControlRow icon={<Headphones size={18} color={palette.violet} />} title="Background playback" detail="Keep audio active outside the app" value={backgroundPlaybackEnabled} onToggle={toggleBackgroundPlayback} accent={palette.violet} line={theme.line} text={theme.text} muted={theme.muted} hapticsEnabled={hapticsEnabled} />
-          <ControlRow icon={<Clapperboard size={18} color={palette.pink} />} title="Video autoplay" detail="Play official previews after they load" value={videoAutoplayEnabled} onToggle={toggleVideoAutoplay} accent={palette.pink} line={theme.line} text={theme.text} muted={theme.muted} hapticsEnabled={hapticsEnabled} />
-          <ControlRow icon={<Smartphone size={18} color="#62DDF5" />} title="Touch feedback" detail="Tactile cues for gestures and controls" value={hapticsEnabled} onToggle={toggleHaptics} accent="#62DDF5" line="transparent" text={theme.text} muted={theme.muted} hapticsEnabled={hapticsEnabled} />
+          <ControlRow icon={<Volume2 size={18} color={activeThemeColor} />} title="Preview audio" detail="Enable 30-second catalog playback" value={soundEnabled} onToggle={toggleSound} accent={activeThemeColor} line={theme.line} text={theme.text} muted={theme.muted} switchOffColor={theme.surfaceSoft} hapticsEnabled={hapticsEnabled} />
+          <ControlRow icon={<Zap size={18} color={palette.coral} />} title="Instant play" detail="Start audio when a new track is selected" value={autoPlayEnabled} onToggle={toggleAutoPlay} accent={palette.coral} line={theme.line} text={theme.text} muted={theme.muted} switchOffColor={theme.surfaceSoft} hapticsEnabled={hapticsEnabled} />
+          <ControlRow icon={<Headphones size={18} color={palette.violet} />} title="Background playback" detail="Keep audio active outside the app" value={backgroundPlaybackEnabled} onToggle={toggleBackgroundPlayback} accent={palette.violet} line={theme.line} text={theme.text} muted={theme.muted} switchOffColor={theme.surfaceSoft} hapticsEnabled={hapticsEnabled} />
+          <ControlRow icon={<Clapperboard size={18} color={palette.pink} />} title="Video autoplay" detail="Play official previews after they load" value={videoAutoplayEnabled} onToggle={toggleVideoAutoplay} accent={palette.pink} line={theme.line} text={theme.text} muted={theme.muted} switchOffColor={theme.surfaceSoft} hapticsEnabled={hapticsEnabled} />
+          <ControlRow icon={<Smartphone size={18} color="#62DDF5" />} title="Touch feedback" detail="Tactile cues for gestures and controls" value={hapticsEnabled} onToggle={toggleHaptics} accent="#62DDF5" line="transparent" text={theme.text} muted={theme.muted} switchOffColor={theme.surfaceSoft} hapticsEnabled={hapticsEnabled} />
         </View>
 
         <View style={styles.sectionHeading}>

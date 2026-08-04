@@ -113,7 +113,7 @@ function OrbitCard({ song, index, scrollX, onSelectSong, onLongPressSong, reduce
             <LinearGradient colors={['transparent', 'rgba(255,255,255,0.38)', 'transparent']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
           </Animated.View>
           <Text style={styles.index}>{String(index + 1).padStart(2, '0')}</Text>
-          <View style={[styles.play, { backgroundColor: current ? activeThemeColor : palette.lime }]}>
+          <View style={[styles.play, { backgroundColor: activeThemeColor }]}>
             {current && isPlaying ? <Pause size={15} color={palette.ink} fill={palette.ink} /> : <Play size={15} color={palette.ink} fill={palette.ink} />}
           </View>
         </Animated.View>
@@ -122,7 +122,7 @@ function OrbitCard({ song, index, scrollX, onSelectSong, onLongPressSong, reduce
           <Text numberOfLines={1} style={[styles.artist, { color: theme.muted }]}>{song.artist}</Text>
           <View style={styles.footer}>
             <Text numberOfLines={1} style={[styles.genre, { color: theme.muted }]}>{song.genre.toUpperCase()}</Text>
-            {current && <View style={styles.signal}><View style={styles.barSmall} /><View style={styles.barTall} /><View style={styles.barMid} /></View>}
+            {current && <View style={styles.signal}><View style={[styles.barSmall, { backgroundColor: activeThemeColor }]} /><View style={[styles.barTall, { backgroundColor: activeThemeColor }]} /><View style={[styles.barMid, { backgroundColor: activeThemeColor }]} /></View>}
           </View>
         </View>
       </Pressable>
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 7 },
   genre: { fontSize: 7.5, fontWeight: '800', letterSpacing: 0.8, maxWidth: '75%' },
   signal: { height: 10, flexDirection: 'row', alignItems: 'flex-end', gap: 2 },
-  barSmall: { width: 2, height: 4, backgroundColor: palette.lime, borderRadius: 1 },
-  barTall: { width: 2, height: 10, backgroundColor: palette.lime, borderRadius: 1 },
-  barMid: { width: 2, height: 7, backgroundColor: palette.lime, borderRadius: 1 },
+  barSmall: { width: 2, height: 4, borderRadius: 1 },
+  barTall: { width: 2, height: 10, borderRadius: 1 },
+  barMid: { width: 2, height: 7, borderRadius: 1 },
 });

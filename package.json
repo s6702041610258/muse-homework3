@@ -5,6 +5,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~57.0.9",
+    "expo-asset": "~57.0.8",
     "expo-audio": "~57.0.3",
     "expo-blur": "~57.0.2",
     "expo-constants": "~57.0.8",
@@ -22,12 +23,13 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.2",
-    "react-native-gesture-handler": "~3.1.0",
+    "react-native-gesture-handler": "~2.32.0",
     "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-screens": "~4.26.0",
     "react-native-svg": "15.15.4",
     "react-native-web": "^0.21.2",
+    "react-native-worklets": "0.10.1",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
@@ -41,14 +43,22 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "netlify dev --command \"expo start --web --port 8081\" --target-port 8081 --port 8888",
+    "web": "expo start --web",
     "web:expo": "expo start --web",
+    "web:netlify": "netlify dev --command \"expo start --web --port 8081\" --target-port 8081 --port 8888",
     "build:web": "expo export --platform web",
     "typecheck": "tsc --noEmit",
     "lint": "expo lint src --max-warnings 0",
     "test": "vitest run",
     "audit:production": "npm audit --omit=dev --audit-level=high",
     "verify:production": "npm run typecheck && npm run lint && npm run test && npm run audit:production && npm run build:web && node scripts/verify-production.mjs"
+  },
+  "expo": {
+    "install": {
+      "exclude": [
+        "react-native-gesture-handler"
+      ]
+    }
   },
   "private": true
 }

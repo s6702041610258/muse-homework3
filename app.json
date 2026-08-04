@@ -27,6 +27,7 @@
     },
     "web": {
       "bundler": "metro",
+      "output": "server",
       "favicon": "./assets/muse-app-icon-1024.png",
       "name": "MUSE — Music Discovery",
       "shortName": "MUSE",
@@ -61,7 +62,8 @@
       ],
       "expo-video",
       "expo-router",
-      "expo-status-bar"
+      "expo-status-bar",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

@@ -50,6 +50,7 @@ export function HomeScreen({ onOpenDocumentation }: HomeScreenProps) {
   const error = useMusicStore((state) => state.error);
   const setError = useMusicStore((state) => state.setError);
   const isDarkMode = useMusicStore((state) => state.isDarkMode);
+  const activeThemeColor = useMusicStore((state) => state.activeThemeColor);
   const setActiveSong = useMusicStore((state) => state.setActiveSong);
   const setPlaybackQueue = useMusicStore((state) => state.setPlaybackQueue);
   const setIsPlayerExpanded = useMusicStore((state) => state.setIsPlayerExpanded);
@@ -144,13 +145,13 @@ export function HomeScreen({ onOpenDocumentation }: HomeScreenProps) {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={[styles.content, { paddingTop: insets.top + 10, paddingBottom: bottomSpace }]}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={palette.lime} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={activeThemeColor} colors={[activeThemeColor]} />}
       >
         <Animated.View entering={reducedMotion ? undefined : FadeInDown.duration(500)} style={styles.header}>
           <View style={styles.headerTop}>
             <View>
-              <Text style={[styles.signalLabel, { color: theme.muted }]}>SATURDAY · SIGNAL 94.2</Text>
-              <Text style={[styles.wordmark, { color: theme.text }]}>MUSE<Text style={{ color: palette.lime }}>°</Text></Text>
+              <Text style={[styles.signalLabel, { color: theme.muted }]}>LIVE CATALOG · SIGNAL 94.2</Text>
+              <Text style={[styles.wordmark, { color: theme.text }]}>MUSE<Text style={{ color: activeThemeColor }}>°</Text></Text>
             </View>
             <View style={[styles.livePill, { borderColor: `${palette.coral}55`, backgroundColor: `${palette.coral}12` }]}>
               <View style={styles.liveDot} />
@@ -158,20 +159,20 @@ export function HomeScreen({ onOpenDocumentation }: HomeScreenProps) {
             </View>
           </View>
           <Text style={[styles.statement, width < 350 && styles.statementCompact, { color: theme.text }]}>Find your{`\n`}frequency.</Text>
-          <Text style={[styles.statementCopy, { color: theme.muted }]}>Thirty-second previews. Zero noise. <Text style={{ color: palette.lime }}>•</Text>{`\n`}A universe of sound, tuned to you.</Text>
+          <Text style={[styles.statementCopy, { color: theme.muted }]}>Thirty-second previews. Zero noise. <Text style={{ color: activeThemeColor }}>•</Text>{`\n`}A universe of sound, tuned to you.</Text>
         </Animated.View>
 
         <Pressable
           onPress={onOpenDocumentation}
-          style={({ pressed }) => [styles.learnBanner, { backgroundColor: theme.surface, borderColor: `${palette.lime}55` }, pressed && styles.learnBannerPressed]}
+          style={({ pressed }) => [styles.learnBanner, { backgroundColor: theme.surface, borderColor: `${activeThemeColor}55` }, pressed && styles.learnBannerPressed]}
           accessibilityRole="button"
           accessibilityLabel="Open the MUSE project guide"
           accessibilityHint="Shows detailed English documentation about the app architecture, tools, and features"
         >
           <View style={styles.learnBannerLeft}>
-            <View style={styles.learnBannerIcon}><BookOpen size={17} color={palette.ink} /></View>
+            <View style={[styles.learnBannerIcon, { backgroundColor: activeThemeColor }]}><BookOpen size={17} color={palette.ink} /></View>
             <View style={styles.learnBannerCopy}>
-              <Text style={[styles.learnBannerKicker, { color: palette.lime }]}>NEW · OPEN PROJECT GUIDE</Text>
+              <Text style={[styles.learnBannerKicker, { color: activeThemeColor }]}>NEW · OPEN PROJECT GUIDE</Text>
               <Text style={[styles.learnBannerTitle, { color: theme.text }]}>See how MUSE is built</Text>
               <Text style={[styles.learnBannerText, { color: theme.muted }]}>Architecture, tools, features, data flow, testing, and release notes.</Text>
             </View>
@@ -213,7 +214,7 @@ export function HomeScreen({ onOpenDocumentation }: HomeScreenProps) {
             <Radio size={25} color={palette.coral} />
             <Text style={[styles.messageTitle, { color: theme.text }]}>Signal interrupted</Text>
             <Text style={[styles.messageCopy, { color: theme.muted }]}>{error}</Text>
-            <Pressable style={styles.retryButton} onPress={() => void fetchMusic(searchQuery)} accessibilityRole="button" accessibilityLabel="Retry music search">
+            <Pressable style={[styles.retryButton, { backgroundColor: activeThemeColor }]} onPress={() => void fetchMusic(searchQuery)} accessibilityRole="button" accessibilityLabel="Retry music search">
               <Text style={styles.retryText}>Reconnect</Text>
             </Pressable>
           </Animated.View>
@@ -222,7 +223,7 @@ export function HomeScreen({ onOpenDocumentation }: HomeScreenProps) {
             <Image source={require('../../assets/prism-sound-hero-720.jpg')} style={StyleSheet.absoluteFill} contentFit="cover" />
             <LinearGradient colors={['transparent', 'rgba(8,7,11,0.30)', 'rgba(8,7,11,0.96)']} locations={[0.08, 0.44, 1]} style={StyleSheet.absoluteFill} />
             <View style={styles.heroContent}>
-              <Text style={styles.heroLabel}>MUSE ORIGINAL · 001</Text>
+              <Text style={[styles.heroLabel, { color: activeThemeColor }]}>MUSE ORIGINAL · 001</Text>
               <Text style={styles.heroTitle}>Sound without{`\n`}the algorithm.</Text>
               <Text style={styles.heroCopy}>Choose a mood above or search for an artist to start your session.</Text>
             </View>
@@ -233,11 +234,11 @@ export function HomeScreen({ onOpenDocumentation }: HomeScreenProps) {
               <Image source={{ uri: featured.artwork }} style={StyleSheet.absoluteFill} contentFit="cover" transition={350} />
               <LinearGradient colors={['rgba(8,7,11,0.02)', 'rgba(8,7,11,0.22)', 'rgba(8,7,11,0.98)']} locations={[0.05, 0.45, 1]} style={StyleSheet.absoluteFill} />
               <View style={styles.heroTopRow}>
-                <View style={styles.featuredTag}><Sparkles size={12} color={palette.ink} /><Text style={styles.featuredTagText}>FEATURED</Text></View>
+                <View style={[styles.featuredTag, { backgroundColor: activeThemeColor }]}><Sparkles size={12} color={palette.ink} /><Text style={styles.featuredTagText}>FEATURED</Text></View>
                 <View style={styles.heroArrow}><ArrowRight size={18} color={palette.text} /></View>
               </View>
               <View style={styles.heroContent}>
-                <Text style={styles.heroLabel}>{featured.genre.toUpperCase()} · {featured.releaseDate}</Text>
+                <Text style={[styles.heroLabel, { color: activeThemeColor }]}>{featured.genre.toUpperCase()} · {featured.releaseDate}</Text>
                 <Text numberOfLines={2} style={styles.heroTitle}>{featured.title}</Text>
                 <Text numberOfLines={1} style={styles.heroCopy}>{featured.artist} — {featured.album}</Text>
               </View>
@@ -245,7 +246,7 @@ export function HomeScreen({ onOpenDocumentation }: HomeScreenProps) {
 
             <View style={styles.sectionHeader}>
               <View>
-                <View style={styles.sectionKicker}><TrendingUp size={13} color={palette.lime} /><Text style={[styles.sectionKickerText, { color: palette.lime }]}>ON YOUR RADAR</Text></View>
+                <View style={styles.sectionKicker}><TrendingUp size={13} color={activeThemeColor} /><Text style={[styles.sectionKickerText, { color: activeThemeColor }]}>ON YOUR RADAR</Text></View>
                 <Text style={[styles.sectionTitle, { color: theme.text }]}>Fresh orbit</Text>
               </View>
               <Text style={[styles.sectionCount, { color: theme.muted }]}>{searchResults.length} TRACKS</Text>
@@ -289,7 +290,7 @@ const styles = StyleSheet.create({
   learnBanner: { marginHorizontal: 20, marginTop: 10, marginBottom: 12, borderWidth: 1, borderRadius: radii.lg, padding: 13, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   learnBannerPressed: { opacity: 0.72, transform: [{ scale: 0.99 }] },
   learnBannerLeft: { flex: 1, flexDirection: 'row', alignItems: 'center' },
-  learnBannerIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: palette.lime, alignItems: 'center', justifyContent: 'center' },
+  learnBannerIcon: { width: 40, height: 40, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
   learnBannerCopy: { flex: 1, marginLeft: 10 },
   learnBannerKicker: { fontSize: 6.8, fontWeight: '900', letterSpacing: 0.85 },
   learnBannerTitle: { fontSize: 13, fontWeight: '900', letterSpacing: -0.25, marginTop: 2 },
@@ -301,11 +302,11 @@ const styles = StyleSheet.create({
   moodText: { fontSize: 11, fontWeight: '700' },
   hero: { height: 280, marginHorizontal: 20, borderRadius: radii.xl, overflow: 'hidden', borderWidth: 1, backgroundColor: palette.inkRaised, justifyContent: 'space-between' },
   heroTopRow: { flexDirection: 'row', justifyContent: 'space-between', padding: 15 },
-  featuredTag: { flexDirection: 'row', alignItems: 'center', backgroundColor: palette.lime, borderRadius: radii.pill, paddingHorizontal: 10, paddingVertical: 7, gap: 5 },
+  featuredTag: { flexDirection: 'row', alignItems: 'center', borderRadius: radii.pill, paddingHorizontal: 10, paddingVertical: 7, gap: 5 },
   featuredTagText: { color: palette.ink, fontSize: 9, fontWeight: '900', letterSpacing: 0.7 },
   heroArrow: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(8,7,11,0.62)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.18)' },
   heroContent: { marginTop: 'auto', padding: 22 },
-  heroLabel: { color: palette.lime, fontSize: 9, fontWeight: '900', letterSpacing: 1.4, marginBottom: 8 },
+  heroLabel: { fontSize: 9, fontWeight: '900', letterSpacing: 1.4, marginBottom: 8 },
   heroTitle: { color: palette.text, fontSize: 29, lineHeight: 30, fontWeight: '900', letterSpacing: -1 },
   heroCopy: { color: 'rgba(247,244,238,0.70)', fontSize: 11.5, lineHeight: 16, fontWeight: '600', marginTop: 9 },
   sectionHeader: { paddingHorizontal: 20, marginTop: 30, marginBottom: 12, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' },
@@ -320,6 +321,6 @@ const styles = StyleSheet.create({
   messageCard: { margin: 20, borderWidth: 1, borderRadius: radii.lg, padding: 24, alignItems: 'flex-start' },
   messageTitle: { fontSize: 20, fontWeight: '800', marginTop: 15 },
   messageCopy: { fontSize: 12, lineHeight: 18, marginTop: 6 },
-  retryButton: { marginTop: 18, borderRadius: radii.pill, backgroundColor: palette.lime, paddingHorizontal: 16, paddingVertical: 10 },
+  retryButton: { marginTop: 18, borderRadius: radii.pill, paddingHorizontal: 16, paddingVertical: 10 },
   retryText: { color: palette.ink, fontSize: 11, fontWeight: '900' },
 });

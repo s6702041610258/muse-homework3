@@ -104,7 +104,7 @@ const featureGroups = [
     icon: Globe2,
     title: 'Installable web app',
     accent: '#F4B942',
-    summary: 'The Expo web export includes a manifest, install guidance, a service worker, and a same-origin catalog gateway.',
+    summary: 'Expo Router serves the local web app and same-origin catalog API, while the export includes the PWA manifest and service worker.',
     points: ['PWA app-shell caching', 'iPhone Add to Home Screen guidance', 'Cross-origin media excluded from cache'],
   },
 ];
@@ -129,7 +129,7 @@ const toolGroups = [
       ['Zustand 5', 'Global search, player, queue, favorites, modal, and preference state'],
       ['AsyncStorage 2', 'Device-local favorites, preferences, and issue-report drafts'],
       ['iTunes Search API', 'Public song and music-video catalog metadata with preview URLs'],
-      ['Netlify Function', 'Validated same-origin web proxy that avoids browser CORS failures'],
+      ['Expo Router API Route', 'Validated same-origin local web gateway that avoids browser CORS failures'],
     ],
   },
   {
@@ -153,7 +153,7 @@ const toolGroups = [
       ['Vitest', 'Unit and integration-style coverage for services, state, and queue logic'],
       ['Expo ESLint', 'Code-quality and React Hooks enforcement with zero warnings'],
       ['EAS profiles', 'Development, Android preview, and production build definitions'],
-      ['Netlify', 'Static web hosting and serverless catalog gateway deployment'],
+      ['Netlify', 'Optional final-stage web hosting and production gateway adapter'],
     ],
   },
 ];
@@ -161,7 +161,7 @@ const toolGroups = [
 const searchFlow = [
   ['01', 'Intent', 'A search submission, mood selection, refresh, or initial query starts the pipeline.'],
   ['02', 'Concurrency guard', 'The previous AbortController is cancelled and a monotonically increasing request ID is assigned.'],
-  ['03', 'Platform route', 'Native calls Apple directly. Web calls the same-origin /api/itunes-search Netlify Function.'],
+  ['03', 'Platform route', 'Native calls Apple directly. Local web calls the same-origin Expo Router /api/itunes-search route.'],
   ['04', 'Gateway validation', 'The function validates the entity, limits the term length, clamps result count, and applies a timeout.'],
   ['05', 'Domain mapping', 'Results without previews are removed; valid API records become typed Song objects with larger artwork.'],
   ['06', 'Safe commit', 'The screen updates only when the response still belongs to the latest request ID.'],
@@ -177,7 +177,9 @@ const sourceMap = [
   ['src/store/', 'Shared application state, actions, and local persistence'],
   ['src/types/', 'External API and internal domain contracts'],
   ['src/utils/', 'Pure queue behavior and platform-aware shadow helpers'],
-  ['netlify/functions/', 'Validated same-origin web catalog proxy'],
+  ['src/app/api/', 'Expo Router API route used by local web development'],
+  ['src/server/', 'Shared validation and upstream catalog gateway logic'],
+  ['netlify/functions/', 'Optional production adapter for the shared gateway'],
   ['public/', 'PWA shell, manifest, service worker, icons, and privacy page'],
   ['scripts/', 'Production checks and interactive DOM nesting test'],
 ];
@@ -211,7 +213,8 @@ const safeguards = [
 
 const commands = [
   ['npm start', 'Start the Expo development server'],
-  ['npm run web', 'Run Expo web with the local Netlify catalog function'],
+  ['npm run web', 'Run Expo web with its local Router API route'],
+  ['npm run web:netlify', 'Preview the optional Netlify adapter before final deployment'],
   ['npm run typecheck', 'Validate TypeScript without emitting files'],
   ['npm run lint', 'Run Expo ESLint with zero warnings allowed'],
   ['npm test', 'Execute the Vitest test suite'],
@@ -331,7 +334,7 @@ export function DocumentationScreen() {
           </View>
           <View style={[styles.architectureFooter, { borderTopColor: theme.line }]}>
             <Network size={15} color={palette.coral} />
-            <Text style={[styles.architectureFooterText, { color: theme.muted }]}>Native reaches Apple directly. Web uses a validated same-origin Netlify gateway.</Text>
+            <Text style={[styles.architectureFooterText, { color: theme.muted }]}>Native reaches Apple directly. Local web uses a validated same-origin Expo Router API route.</Text>
           </View>
         </View>
 
@@ -412,9 +415,9 @@ export function DocumentationScreen() {
         <View style={[styles.testCard, { backgroundColor: theme.surface, borderColor: theme.line }]}>
           <View style={styles.testHeader}>
             <View style={[styles.testIcon, { backgroundColor: `${palette.lime}18` }]}><TestTube2 size={19} color={palette.lime} /></View>
-            <View><Text style={[styles.testKicker, { color: palette.lime }]}>AUTOMATED COVERAGE</Text><Text style={[styles.testTitle, { color: theme.text }]}>6 files · 20 tests</Text></View>
+            <View><Text style={[styles.testKicker, { color: palette.lime }]}>AUTOMATED COVERAGE</Text><Text style={[styles.testTitle, { color: theme.text }]}>6 files · 21 tests</Text></View>
           </View>
-          <Text style={[styles.testCopy, { color: theme.muted }]}>Coverage includes catalog edge cases, HTML-response guards, proxy routing and validation, Unicode video matching, queue wrapping and shuffle safety, issue validation and submission, theme persistence, and interactive web DOM nesting.</Text>
+          <Text style={[styles.testCopy, { color: theme.muted }]}>Coverage includes catalog edge cases, HTML-response guards, Expo API routing and validation, the production adapter, Unicode video matching, queue wrapping and shuffle safety, issue validation and submission, theme persistence, and interactive web DOM nesting.</Text>
         </View>
 
         <SectionTitle index="07" kicker="DEVELOPMENT" title="Commands you will use" description="The project keeps everyday development and production verification behind a small, memorable command surface." accent={palette.lime} />
@@ -447,7 +450,7 @@ export function DocumentationScreen() {
           <View style={[styles.footerIcon, { backgroundColor: activeThemeColor }]}><Boxes size={22} color={palette.ink} /></View>
           <Text style={[styles.footerKicker, { color: activeThemeColor }]}>KEEP EXPLORING</Text>
           <Text style={[styles.footerTitle, { color: theme.text }]}>Trace one feature end to end.</Text>
-          <Text style={[styles.footerText, { color: theme.muted }]}>A useful study path is HomeScreen → searchSongs → Netlify Function → Song mapping → Zustand actions → player hook → UI status. That route demonstrates the full architecture in a single real interaction.</Text>
+          <Text style={[styles.footerText, { color: theme.muted }]}>A useful study path is HomeScreen → searchSongs → Expo Router API Route → shared gateway → Song mapping → Zustand actions → player hook → UI status. That route demonstrates the full architecture in a single real interaction.</Text>
           <View style={styles.footerTags}>
             {[['UI', Sparkles], ['STATE', GitBranch], ['DATA', Cloud], ['MEDIA', Music2], ['QA', Wrench]].map(([label, Icon]) => {
               const TagIcon = Icon as typeof Sparkles;

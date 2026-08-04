@@ -51,7 +51,7 @@ export function CustomTabBar({ activeTab, onTabChange }: CustomTabBarProps) {
               accessibilityLabel={tab.label}
               accessibilityState={{ selected: isActive }}
             >
-              <Animated.View layout={LinearTransition} style={[styles.iconContainer, isActive && { backgroundColor: palette.lime }]}> 
+              <Animated.View layout={LinearTransition} style={[styles.iconContainer, isActive && { backgroundColor: activeThemeColor }]}>
                 <IconComponent
                   size={19}
                   strokeWidth={isActive ? 2.6 : 2}

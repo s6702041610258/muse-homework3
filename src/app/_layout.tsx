@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useSyncExternalStore } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Stack, usePathname, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -30,6 +30,17 @@ function tabFromPath(pathname: string): AppTab {
   return 'search';
 }
 
+function ClientMusicPlayerSheet() {
+  const isMounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
+
+  if (!isMounted) return null;
+  return <MusicPlayerSheet />;
+}
+
 export default function RootLayout() {
   const router = useRouter();
   const pathname = usePathname();
@@ -49,11 +60,12 @@ export default function RootLayout() {
   }, [loadFavorites, loadPreferences]);
 
   useEffect(() => {
-    void SystemUI.setBackgroundColorAsync(theme.background);
+    void SystemUI.setBackgroundColorAsync(theme.background).catch(() => undefined);
     if (typeof document !== 'undefined') {
+      document.documentElement.style.colorScheme = isDarkMode ? 'dark' : 'light';
       document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme.background);
     }
-  }, [theme.background]);
+  }, [isDarkMode, theme.background]);
 
   const changeTab = (tab: AppTab) => {
     router.replace(routeByTab[tab]);
@@ -72,7 +84,7 @@ export default function RootLayout() {
         </View>
 
         <CustomTabBar activeTab={tabFromPath(pathname)} onTabChange={changeTab} />
-        <MusicPlayerSheet />
+        <ClientMusicPlayerSheet />
         <InstallPrompt />
         <SongDetailModal
           song={selectedSongForDetail}

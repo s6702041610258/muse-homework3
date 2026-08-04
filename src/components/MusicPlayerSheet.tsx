@@ -137,7 +137,7 @@ export function MusicPlayerSheet() {
                   <View style={styles.discRing} /><View style={styles.discLabel} /><View style={styles.discPin} />
                 </Animated.View>
                 <View style={[styles.orbit, { borderColor: `${activeThemeColor}55` }]} />
-                <View style={[styles.orbitPearl, { backgroundColor: activeThemeColor }]} />
+                <View style={[styles.orbitPearl, { backgroundColor: activeThemeColor }, createShadow(activeThemeColor, 0, 8, 0.8, 5)]} />
               </View>
 
               <View style={styles.waveform}>
@@ -171,7 +171,7 @@ export function MusicPlayerSheet() {
               <View style={styles.controls}>
                 <Pressable onPress={() => { feedback(); toggleShuffle(); }} style={[styles.utility, shuffleEnabled && { backgroundColor: `${activeThemeColor}20` }]} accessibilityRole="button" accessibilityLabel="Shuffle" accessibilityState={{ selected: shuffleEnabled }}><Shuffle size={19} color={shuffleEnabled ? activeThemeColor : theme.muted} /></Pressable>
                 <Pressable onPress={() => skipTrack(-1)} style={styles.control} accessibilityRole="button" accessibilityLabel="Previous track"><SkipBack size={28} color={theme.text} fill={theme.text} /></Pressable>
-                <Pressable onPress={playPause} style={[styles.mainPlay, { backgroundColor: activeThemeColor }]} accessibilityRole="button" accessibilityLabel={isPlaying ? 'Pause preview' : 'Play preview'}>{isPlaying ? <Pause size={28} color={palette.ink} fill={palette.ink} /> : <Play size={28} color={palette.ink} fill={palette.ink} />}</Pressable>
+                <Pressable onPress={playPause} style={[styles.mainPlay, { backgroundColor: activeThemeColor }, createShadow(activeThemeColor, 7, 16, 0.24, 10)]} accessibilityRole="button" accessibilityLabel={isPlaying ? 'Pause preview' : 'Play preview'}>{isPlaying ? <Pause size={28} color={palette.ink} fill={palette.ink} /> : <Play size={28} color={palette.ink} fill={palette.ink} />}</Pressable>
                 <Pressable onPress={() => skipTrack(1)} style={styles.control} accessibilityRole="button" accessibilityLabel="Next track"><SkipForward size={28} color={theme.text} fill={theme.text} /></Pressable>
                 <Pressable onPress={() => { feedback(); cycleRepeatMode(); }} style={[styles.utility, repeatMode !== 'off' && { backgroundColor: `${activeThemeColor}20` }]} accessibilityRole="button" accessibilityLabel={`Repeat ${repeatMode}`} accessibilityState={{ selected: repeatMode !== 'off' }}>
                   <Repeat2 size={20} color={repeatMode !== 'off' ? activeThemeColor : theme.muted} />

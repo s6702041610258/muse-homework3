@@ -17,6 +17,7 @@ export function FavoritesScreen() {
   const reducedMotion = useReducedMotion();
   const favorites = useMusicStore((state) => state.favorites);
   const isDarkMode = useMusicStore((state) => state.isDarkMode);
+  const activeThemeColor = useMusicStore((state) => state.activeThemeColor);
   const setActiveSong = useMusicStore((state) => state.setActiveSong);
   const setPlaybackQueue = useMusicStore((state) => state.setPlaybackQueue);
   const setIsPlayerExpanded = useMusicStore((state) => state.setIsPlayerExpanded);
@@ -60,7 +61,7 @@ export function FavoritesScreen() {
           <Animated.View entering={reducedMotion ? undefined : FadeInDown.delay(100)} style={[styles.empty, { borderColor: theme.line }]}>
             <Image source={require('../../assets/prism-sound-hero-720.jpg')} style={StyleSheet.absoluteFill} contentFit="cover" />
             <LinearGradient colors={['rgba(8,7,11,0.06)', 'rgba(8,7,11,0.94)']} style={StyleSheet.absoluteFill} />
-            <View style={styles.emptyIcon}><RadioTower size={19} color={palette.ink} /></View>
+            <View style={[styles.emptyIcon, { backgroundColor: activeThemeColor }]}><RadioTower size={19} color={palette.ink} /></View>
             <View style={styles.emptyCopy}>
               <Text style={styles.emptyTitle}>Your signal is quiet.</Text>
               <Text style={styles.emptyText}>Tap the heart on any track and it will live here — saved locally, ready when you return.</Text>
@@ -74,7 +75,7 @@ export function FavoritesScreen() {
                 <Text style={[styles.summaryTitle, { color: theme.text }]}>{favorites.length} tracks</Text>
                 <Text style={[styles.summarySub, { color: theme.muted }]}>Curated by you · stored on device</Text>
               </View>
-              <Pressable onPress={playAll} style={styles.playAll} accessibilityRole="button" accessibilityLabel="Play all favorite tracks"><Play size={18} color={palette.ink} fill={palette.ink} /></Pressable>
+              <Pressable onPress={playAll} style={[styles.playAll, { backgroundColor: activeThemeColor }]} accessibilityRole="button" accessibilityLabel="Play all favorite tracks"><Play size={18} color={palette.ink} fill={palette.ink} /></Pressable>
             </View>
 
             <View style={styles.sectionRow}>
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
   count: { minWidth: 54, height: 38, borderRadius: radii.pill, borderWidth: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 },
   countText: { fontSize: 11, fontWeight: '800' },
   empty: { height: 440, marginHorizontal: 20, borderRadius: radii.xl, borderWidth: 1, overflow: 'hidden', justifyContent: 'space-between', padding: 22 },
-  emptyIcon: { width: 42, height: 42, borderRadius: 21, backgroundColor: palette.lime, alignItems: 'center', justifyContent: 'center' },
+  emptyIcon: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center' },
   emptyCopy: { marginTop: 'auto' },
   emptyTitle: { color: palette.text, fontSize: 28, lineHeight: 31, fontWeight: '900', letterSpacing: -1.1 },
   emptyText: { color: 'rgba(247,244,238,0.67)', fontSize: 12, lineHeight: 18, fontWeight: '600', marginTop: 9, maxWidth: 290 },
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   summaryLabel: { fontSize: 8, fontWeight: '900', letterSpacing: 1.15 },
   summaryTitle: { fontSize: 24, fontWeight: '900', letterSpacing: -0.8, marginTop: 5 },
   summarySub: { fontSize: 10.5, fontWeight: '600', marginTop: 2 },
-  playAll: { width: 52, height: 52, borderRadius: 26, backgroundColor: palette.lime, alignItems: 'center', justifyContent: 'center' },
+  playAll: { width: 52, height: 52, borderRadius: 26, alignItems: 'center', justifyContent: 'center' },
   sectionRow: { paddingHorizontal: 20, marginTop: 29, marginBottom: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   sectionTitle: { fontSize: 24, fontWeight: '900', letterSpacing: -0.8 },
   updated: { flexDirection: 'row', alignItems: 'center', gap: 3 },

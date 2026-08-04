@@ -15,13 +15,14 @@ export function SearchBar({ onSearch }: SearchBarProps) {
   const searchQuery = useMusicStore((state) => state.searchQuery);
   const setSearchQuery = useMusicStore((state) => state.setSearchQuery);
   const isDarkMode = useMusicStore((state) => state.isDarkMode);
+  const activeThemeColor = useMusicStore((state) => state.activeThemeColor);
   const hapticsEnabled = useMusicStore((state) => state.hapticsEnabled);
   const theme = getTheme(isDarkMode);
 
   const [text, setText] = useState(searchQuery);
   const [focused, setFocused] = useState(false);
   const focusShadow = createShadow(
-    focused ? palette.lime : '#6366f1',
+    activeThemeColor,
     3,
     focused ? 14 : 10,
     focused ? 0.4 : 0.15,
@@ -52,9 +53,9 @@ export function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <View style={[styles.container, focusShadow, { borderColor: focused ? palette.lime : theme.line }]}>
+    <View style={[styles.container, focusShadow, { borderColor: focused ? activeThemeColor : theme.line }]}>
       <BlurView intensity={isDarkMode ? 45 : 70} tint={isDarkMode ? 'dark' : 'light'} style={[styles.blurInner, { backgroundColor: isDarkMode ? 'rgba(24,22,29,0.76)' : 'rgba(255,255,255,0.76)' }]}>
-        <View style={[styles.searchIconBox, { backgroundColor: palette.lime }]}>
+        <View style={[styles.searchIconBox, { backgroundColor: activeThemeColor }]}>
           <Search size={17} strokeWidth={2.8} color={palette.ink} />
         </View>
         
@@ -77,7 +78,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
             <X size={14} color={theme.muted} />
           </Pressable>
         )}
-        <Pressable onPress={submitSearch} style={[styles.shortcut, { borderColor: theme.line, backgroundColor: palette.lime }]} accessibilityRole="button" accessibilityLabel="Search">
+        <Pressable onPress={submitSearch} style={[styles.shortcut, { borderColor: theme.line, backgroundColor: activeThemeColor }]} accessibilityRole="button" accessibilityLabel="Search">
           <Text style={[styles.shortcutText, { color: palette.ink }]}>GO</Text>
         </Pressable>
       </BlurView>
