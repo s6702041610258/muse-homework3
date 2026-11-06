@@ -4,6 +4,12 @@ MUSE° is a music discovery and preview application built with Expo, React Nativ
 
 Live web app: https://muse-pj.netlify.app/
 
+## App screenshots
+
+| Discover | Collection | Player | Studio |
+|:---:|:---:|:---:|:---:|
+| ![Discover screen](screenshots/discover.png) | ![Collection screen](screenshots/collection.png) | ![Music player](screenshots/player.png) | ![Studio settings](screenshots/studio.png) |
+
 > MUSE is a discovery and preview experience. It is not a full-track streaming service, subscription platform, music uploader, or Spotify clone. Preview availability and duration are controlled by the upstream Apple catalog.
 
 ## Project guide inside the app
